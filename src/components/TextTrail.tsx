@@ -139,11 +139,12 @@ const TextTrail: React.FC<TextTrailProps> = ({
   const targetColor = useRef<[number, number, number]>([...persistColor.current]);
 
   useEffect(() => {
-    if (!ref.current) return;
+    const currentRef = ref.current;
+    if (!currentRef) return;
 
     const size = () => ({
-      w: ref.current!.clientWidth,
-      h: ref.current!.clientHeight
+      w: currentRef.clientWidth,
+      h: currentRef.clientHeight
     });
     let { w, h } = size();
 
@@ -151,7 +152,7 @@ const TextTrail: React.FC<TextTrailProps> = ({
     renderer.setClearColor(new Color(backgroundColor as number), 0);
     renderer.setPixelRatio(window.devicePixelRatio || 1);
     renderer.setSize(w, h);
-    ref.current.appendChild(renderer.domElement);
+    currentRef.appendChild(renderer.domElement);
 
     const scene = new Scene();
     const fluidScene = new Scene();
@@ -249,11 +250,11 @@ const TextTrail: React.FC<TextTrailProps> = ({
     const mouse = [0, 0],
       target = [0, 0];
     const onMove = (e: PointerEvent) => {
-      const r = ref.current!.getBoundingClientRect();
+      const r = currentRef.getBoundingClientRect();
       target[0] = ((e.clientX - r.left) / r.width) * 2 - 1;
       target[1] = ((r.top + r.height - e.clientY) / r.height) * 2 - 1;
     };
-    ref.current.addEventListener('pointermove', onMove);
+    currentRef.addEventListener('pointermove', onMove);
 
     const ro = new ResizeObserver(() => {
       ({ w, h } = size());
@@ -270,7 +271,7 @@ const TextTrail: React.FC<TextTrailProps> = ({
       label.geometry.dispose();
       label.geometry = new PlaneGeometry(Math.min(w, h), Math.min(w, h));
     });
-    ro.observe(ref.current);
+    ro.observe(currentRef);
 
     const timer = setInterval(() => {
       if (!textColor) {

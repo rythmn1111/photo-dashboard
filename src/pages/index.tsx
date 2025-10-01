@@ -1,5 +1,4 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import Image from "next/image";
 import PhotoAlbum from "../components/PhotoAlbum";
 import Silk from "../components/Silk";
 

@@ -109,13 +109,15 @@ export default function PhotoAlbum({ className = '' }: PhotoAlbumProps) {
             <div className="bg-white p-4 rounded-lg shadow-2xl hover:shadow-white/50 transition-all duration-300 hover:scale-105 transform rotate-1 hover:rotate-0">
               {/* Photo */}
               <div className="w-64 h-64 bg-white rounded-sm overflow-hidden shadow-inner">
-                <img
-                  src={photo.links}
-                  alt={`Photo ${photo.id}`}
-                  className="w-full h-full object-cover"
-                  onLoad={() => console.log('Image loaded:', photo.links)}
-                  onError={() => console.log('Image failed:', photo.links)}
-                />
+                        <Image
+                          src={photo.links}
+                          alt={`Photo ${photo.id}`}
+                          width={256}
+                          height={256}
+                          className="w-full h-full object-cover"
+                          onLoad={() => console.log('Image loaded:', photo.links)}
+                          onError={() => console.log('Image failed:', photo.links)}
+                        />
               </div>
               
                       {/* Polaroid Bottom Strip */}

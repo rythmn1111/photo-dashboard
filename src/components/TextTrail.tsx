@@ -148,7 +148,7 @@ const TextTrail: React.FC<TextTrailProps> = ({
     let { w, h } = size();
 
     const renderer = new WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setClearColor(new Color(backgroundColor as any), 0);
+    renderer.setClearColor(new Color(backgroundColor as number), 0);
     renderer.setPixelRatio(window.devicePixelRatio || 1);
     renderer.setSize(w, h);
     ref.current.appendChild(renderer.domElement);
@@ -304,11 +304,14 @@ const TextTrail: React.FC<TextTrailProps> = ({
     });
 
     return () => {
+      const currentRef = ref.current;
       renderer.setAnimationLoop(null);
       clearInterval(timer);
-      ref.current?.removeEventListener('pointermove', onMove);
+      currentRef?.removeEventListener('pointermove', onMove);
       ro.disconnect();
-      ref.current?.removeChild(renderer.domElement);
+      if (currentRef && renderer.domElement.parentNode === currentRef) {
+        currentRef.removeChild(renderer.domElement);
+      }
       renderer.dispose();
       rt0.dispose();
       rt1.dispose();

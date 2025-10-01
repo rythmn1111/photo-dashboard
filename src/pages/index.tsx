@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import Head from "next/head";
 import PhotoAlbum from "../components/PhotoAlbum";
 import Silk from "../components/Silk";
 
@@ -14,9 +15,15 @@ const geistMono = Geist_Mono({
 
 export default function Home() {
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} font-sans min-h-screen relative`}
-    >
+    <>
+      <Head>
+        <title>Champion Summit</title>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+      </Head>
+      <div
+        className={`${geistSans.className} ${geistMono.className} font-sans min-h-screen relative`}
+      >
       {/* Silk Background */}
       <div className="fixed inset-0 z-0">
         <Silk
@@ -33,6 +40,7 @@ export default function Home() {
       <div className="container mx-auto px-6 py-8 relative z-10">
         <PhotoAlbum />
       </div>
-    </div>
+      </div>
+    </>
   );
 }

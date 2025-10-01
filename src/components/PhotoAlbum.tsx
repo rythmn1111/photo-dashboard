@@ -13,11 +13,22 @@ export default function PhotoAlbum({ className = '' }: PhotoAlbumProps) {
 
   useEffect(() => {
     fetchPhotos()
+    
+    // Auto-refresh every 30 seconds to check for new photos
+    const interval = setInterval(() => {
+      fetchPhotos(true) // Pass true to indicate this is an auto-refresh
+    }, 30000) // 30 seconds
+    
+    return () => clearInterval(interval)
   }, [])
 
-  const fetchPhotos = async () => {
+  const fetchPhotos = async (isAutoRefresh = false) => {
     try {
-      setLoading(true)
+      // Only show loading spinner on initial load, not on auto-refresh
+      if (!isAutoRefresh) {
+        setLoading(true)
+      }
+      
       console.log('Fetching photos from Supabase...')
       const { data, error } = await supabase
         .from('links')
@@ -32,6 +43,7 @@ export default function PhotoAlbum({ className = '' }: PhotoAlbumProps) {
       console.log('Fetched photos:', data)
       console.log('Number of photos:', data?.length || 0)
       setPhotos(data || [])
+      setError(null) // Clear any previous errors
     } catch (err) {
       console.error('Error fetching photos:', err)
       setError(err instanceof Error ? err.message : 'Failed to fetch photos')

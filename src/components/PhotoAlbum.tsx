@@ -69,7 +69,7 @@ export default function PhotoAlbum({ className = '' }: PhotoAlbumProps) {
         <div className="text-center">
           <p className="text-red-300 mb-4 text-xl">Error: {error}</p>
           <button
-            onClick={fetchPhotos}
+            onClick={() => fetchPhotos()}
             className="px-6 py-3 bg-white text-teal-900 rounded-full font-medium hover:bg-teal-50 transition-colors"
           >
             Try Again
@@ -85,7 +85,7 @@ export default function PhotoAlbum({ className = '' }: PhotoAlbumProps) {
         <div className="text-center">
           <p className="text-emerald-400 mb-4 text-xl">No photos found</p>
           <button
-            onClick={fetchPhotos}
+            onClick={() => fetchPhotos()}
             className="px-6 py-3 bg-emerald-500 text-black rounded-full font-medium hover:bg-emerald-400 transition-colors"
           >
             Refresh

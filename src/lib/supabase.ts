@@ -9,4 +9,6 @@ export interface Link {
   id: number
   links: string
   created_at?: string
+  category?: string
+  arweave_link?: string
 }

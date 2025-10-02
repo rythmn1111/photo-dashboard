@@ -109,14 +109,27 @@ export default function PhotoAlbum({ className = '' }: PhotoAlbumProps) {
         </div>
         <div className="text-center mb-8">
           <h1 className="text-6xl font-black text-white tracking-wider">
-            #Champion Summit#
+            Arweave Day Asia
           </h1>
         </div>
       </div>
       
-      <div className="flex flex-wrap gap-8 justify-center">
+      <div className="flex flex-col items-center">
+          <div className="w-full max-w-7xl">
+            <h2 className="text-4xl font-bold text-white mb-8 text-center md:text-left md:ml-3">
+              #Champion Summit#
+            </h2>
+          </div>
+        
+        <div className="flex flex-wrap gap-8 justify-center max-w-7xl">
         {photos.map((photo, index) => (
-          <div key={photo.id || index} className="group relative">
+          <a 
+            key={photo.id || index} 
+            href={photo.arweave_link || photo.links}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative cursor-pointer"
+          >
             {/* Polaroid Frame */}
             <div className="bg-white p-4 rounded-lg shadow-2xl hover:shadow-white/50 transition-all duration-300 hover:scale-105 transform rotate-1 hover:rotate-0">
               {/* Photo */}
@@ -145,13 +158,14 @@ export default function PhotoAlbum({ className = '' }: PhotoAlbumProps) {
             </div>
             
             {/* Hover overlay */}
-            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
-              <button className="px-6 py-3 bg-emerald-500 text-black rounded-full font-medium hover:bg-emerald-400 transition-colors shadow-lg">
-                View Photo
-              </button>
+            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center pointer-events-none">
+              <span className="px-6 py-3 bg-emerald-500 text-black rounded-full font-medium shadow-lg">
+                View on Arweave
+              </span>
             </div>
-          </div>
+          </a>
         ))}
+        </div>
       </div>
     </div>
   )

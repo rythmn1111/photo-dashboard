@@ -83,17 +83,34 @@ export default function PhotoAlbum({ className = '' }: PhotoAlbumProps) {
     return (
       <div className={`flex items-center justify-center min-h-[400px] ${className}`}>
         <div className="text-center">
-          <p className="text-emerald-400 mb-4 text-xl">No photos found</p>
-          <button
-            onClick={() => fetchPhotos()}
-            className="px-6 py-3 bg-emerald-500 text-black rounded-full font-medium hover:bg-emerald-400 transition-colors"
-          >
-            Refresh
-          </button>
+          <p className="text-white mb-4 text-3xl font-bold">Photos coming soon :))</p>
         </div>
       </div>
     )
   }
+
+  // Filter photos by date
+  const arweaveDayPhotos = photos.filter(photo => {
+    if (!photo.created_at) return false
+    const photoDate = new Date(photo.created_at)
+    console.log('Photo date:', photoDate, 'Date:', photoDate.getDate(), 'Month:', photoDate.getMonth(), 'Year:', photoDate.getFullYear())
+    // Check if the photo was created on Oct 2, 2025
+    return photoDate.getDate() === 2 && 
+           photoDate.getMonth() === 9 && // October is month 9 (0-indexed)
+           photoDate.getFullYear() === 2025
+  })
+  
+  console.log('Total photos:', photos.length)
+  console.log('Arweave Day photos:', arweaveDayPhotos.length)
+  console.log('Champion Summit photos:', photos.length - arweaveDayPhotos.length)
+  
+  const championSummitPhotos = photos.filter(photo => {
+    if (!photo.created_at) return true // Include photos without dates in Champion Summit
+    const photoDate = new Date(photo.created_at)
+    return !(photoDate.getDate() === 2 && 
+             photoDate.getMonth() === 9 && 
+             photoDate.getFullYear() === 2025)
+  })
 
   return (
     <div className={`${className}`}>
@@ -114,6 +131,68 @@ export default function PhotoAlbum({ className = '' }: PhotoAlbumProps) {
         </div>
       </div>
       
+      {/* Arweave Day Asia Section */}
+      <div className="flex flex-col items-center mb-16">
+        <div className="w-full max-w-7xl">
+          <h2 className="text-4xl font-bold text-white mb-8 text-center md:text-left md:ml-3">
+            #Arweave Day Asia#
+          </h2>
+        </div>
+        
+        {arweaveDayPhotos.length > 0 ? (
+          <div className="flex flex-wrap gap-8 justify-center max-w-7xl">
+            {arweaveDayPhotos.map((photo, index) => (
+              <a 
+                key={photo.id || index} 
+                href={photo.arweave_link || photo.links}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative cursor-pointer"
+              >
+                {/* Polaroid Frame */}
+                <div className="bg-white p-4 rounded-lg shadow-2xl hover:shadow-white/50 transition-all duration-300 hover:scale-105 transform rotate-1 hover:rotate-0">
+                  {/* Photo */}
+                  <div className="w-64 h-64 bg-white rounded-sm overflow-hidden shadow-inner">
+                    <Image
+                      src={photo.links}
+                      alt={`Photo ${photo.id}`}
+                      width={256}
+                      height={256}
+                      className="w-full h-full object-cover"
+                      onLoad={() => console.log('Image loaded:', photo.links)}
+                      onError={() => console.log('Image failed:', photo.links)}
+                    />
+                  </div>
+                  
+                  {/* Polaroid Bottom Strip */}
+                  <div className="bg-white h-16 mt-4 rounded-sm flex items-center justify-center border-t border-gray-200">
+                    <Image
+                      src="/pola.png"
+                      alt="Polaroid Logo"
+                      width={100}
+                      height={100}
+                      className="opacity-60"
+                    />
+                  </div>
+                </div>
+                
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center pointer-events-none">
+                  <span className="px-6 py-3 bg-emerald-500 text-black rounded-full font-medium shadow-lg">
+                    View on Arweave
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-white text-xl">Photos coming soon :))</p>
+          </div>
+        )}
+      </div>
+      
+      {/* Champion Summit Section */}
       <div className="flex flex-col items-center">
           <div className="w-full max-w-7xl">
             <h2 className="text-4xl font-bold text-white mb-8 text-center md:text-left md:ml-3">
@@ -121,8 +200,9 @@ export default function PhotoAlbum({ className = '' }: PhotoAlbumProps) {
             </h2>
           </div>
         
-        <div className="flex flex-wrap gap-8 justify-center max-w-7xl">
-        {photos.map((photo, index) => (
+          {championSummitPhotos.length > 0 ? (
+            <div className="flex flex-wrap gap-8 justify-center max-w-7xl">
+            {championSummitPhotos.map((photo, index) => (
           <a 
             key={photo.id || index} 
             href={photo.arweave_link || photo.links}
@@ -164,9 +244,14 @@ export default function PhotoAlbum({ className = '' }: PhotoAlbumProps) {
               </span>
             </div>
           </a>
-        ))}
+            ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-white text-xl">Photos coming soon :))</p>
+            </div>
+          )}
         </div>
-      </div>
     </div>
   )
 }
